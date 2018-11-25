@@ -1,5 +1,10 @@
 const cheerio = require('cheerio');
 const rp = require('request-promise');
+const low = require('lowdb');
+const FileSync = require('lowdb/adapters/FileSync');
+
+const adapter = new FileSync('db.json');
+const db = low(adapter);
 
 var $;
 
@@ -15,15 +20,13 @@ function getData() {
 
     rp(options)
         .then(() => {
-            var container = $('.section-listing__row-content');
-
             $('.offer-item').each(function(index, element) {
                 data.push(getOfferObject(element));
             });
 
             console.log("Scrap Done, " + data.length + " apartments found!");
 
-            return data;
+            saveData(data);
         })
         .catch((err) => {
             console.log(err);
@@ -42,6 +45,31 @@ function getOfferObject(element) {
     }
 }
 
+function getSum(total, offer) {
+    return total + Math.round(offer.price);
+}
+
+function saveData(data) {
+    const collection = db
+        .defaults({ values: [] })
+        .get('values')
+
+    var totalPrice = data.reduce(getSum, 0);
+    var median = totalPrice / data.length;
+
+    const newValue = collection
+        .push({value: median, date: new Date(Date.now())})
+        .write();
+}
+
+function getSavedData(startDate, endDate) {
+    return db.get('values')
+            .filter(function (v) {
+                return new Date(v.date) >= startDate && new Date(v.date) <= endDate
+            });
+}
+
 module.exports = {
-    getData
+    getData,
+    getSavedData
 }
