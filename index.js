@@ -13,7 +13,7 @@ var j = schedule.scheduleJob('*/5 * * * * *', function(){
 });
 
 app.get('/', function(req, res) {
-    res.status(200).send('Hello world');
+    // res.status(200).send('Hello world');
 });
 
 app.listen(PORT, function() {
