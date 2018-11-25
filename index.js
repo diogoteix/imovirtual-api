@@ -1,3 +1,6 @@
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8081;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+
 var express = require('express');
 var schedule = require('node-schedule');
 
@@ -5,12 +8,16 @@ var imovirtualScraper =  require('./imovirtual-scrapper');
 
 var app = express();
 
-var PORT = 3000;
-
 // every 5 seconds
 // var j = schedule.scheduleJob('*/5 * * * * *', function(){
 //     imovirtualScraper.getData();
 // });
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 app.get('/', function(req, res) {
     var startDate = new Date(parseInt(req.query.startDate) * 1000);
@@ -19,6 +26,6 @@ app.get('/', function(req, res) {
     res.status(200).send(imovirtualScraper.getSavedData(startDate, endDate));
 });
 
-app.listen(PORT, function() {
-    console.log('Server is running on PORT:',PORT);
+app.listen(server_port, server_ip_address, function() {
+    console.log('Server is running on server_ip_address ' + server_ip_address + ' and server_port:' + server_port);
 });
