@@ -56,9 +56,11 @@ function saveData(data) {
 
     var totalPrice = data.reduce(getSum, 0);
     var median = totalPrice / data.length;
+    var max = Math.max.apply(Math, data.map(function(o) { return o.price; }));
+    var min = Math.min.apply(Math, data.map(function(o) { return o.price; }));
 
     const newValue = collection
-        .push({value: median, date: new Date(Date.now())})
+        .push({median, min, max, date: new Date(Date.now())})
         .write();
 }
 
