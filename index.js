@@ -26,6 +26,6 @@ app.get('/', function(req, res) {
     res.status(200).send(imovirtualScraper.getSavedData(startDate, endDate));
 });
 
-app.listen(server_port, server_ip_address, function() {
+app.listen(server_port, function() {
     console.log('Server is running on server_ip_address ' + server_ip_address + ' and server_port:' + server_port);
 });
