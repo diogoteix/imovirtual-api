@@ -9,9 +9,9 @@ var imovirtualScraper =  require('./imovirtual-scrapper');
 var app = express();
 
 // every 5 seconds
-// var j = schedule.scheduleJob('*/5 * * * * *', function(){
-//     imovirtualScraper.getData();
-// });
+var j = schedule.scheduleJob({hour: 15, minute: 30}, function(){
+    imovirtualScraper.getData();
+});
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
