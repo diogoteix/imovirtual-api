@@ -1,5 +1,5 @@
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8081;
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var server_port = process.env.PORT || 8081;
+var server_ip_address = process.env.IP || '127.0.0.1';
 
 var express = require('express');
 var schedule = require('node-schedule');
