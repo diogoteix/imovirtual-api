@@ -10,12 +10,24 @@ var app = express();
 
 // every 5 seconds
 var j = schedule.scheduleJob({hour: 16, minute: 00}, function(){
-    imovirtualScraper.getData();
+    updateCurrentDay();
 });
 
 var i = schedule.scheduleJob({minute: 59}, function(){
     console.log("I'm alive!");
 });
+
+function updateCurrentDay() {
+    var startDate = new Date(1543148511 * 1000);
+    var endDate = new Date(Date.now());
+
+    var data = imovirtualScraper.getSavedData(startDate, endDate);
+
+    var currentDate = endDate.setHours(0,0,0,0);
+    if (new Date(data[data.length - 1].date).getTime() < currentDate) {
+        imovirtualScraper.getData();
+    }
+}
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -33,13 +45,5 @@ app.get('/', function(req, res) {
 app.listen(server_port, function() {
     console.log('Server is running on server_ip_address ' + server_ip_address + ' and server_port:' + server_port);
 
-    var startDate = new Date(1543148511 * 1000);
-    var endDate = new Date(Date.now());
-
-    var data = imovirtualScraper.getSavedData(startDate, endDate);
-
-    var currentDate = endDate.setHours(0,0,0,0);
-    if (new Date(data[data.length - 1].date).getTime() < currentDate) {
-        imovirtualScraper.getData();
-    }
+    updateCurrentDay();
 });
