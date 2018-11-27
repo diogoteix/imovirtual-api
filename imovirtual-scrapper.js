@@ -68,7 +68,8 @@ function getSavedData(startDate, endDate) {
     return db.get('values')
             .filter(function (v) {
                 return new Date(v.date) >= startDate && new Date(v.date) <= endDate
-            });
+            })
+            .value();
 }
 
 module.exports = {
