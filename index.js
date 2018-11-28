@@ -24,7 +24,7 @@ function updateCurrentDay() {
     var data = imovirtualScraper.getSavedData(startDate, endDate);
 
     var currentDate = endDate.setHours(0,0,0,0);
-    if (new Date(data[data.length - 1].date).getTime() < currentDate) {
+    if (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15) {
         imovirtualScraper.getData();
     }
 }
