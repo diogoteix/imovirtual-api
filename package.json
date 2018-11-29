@@ -25,6 +25,5 @@
     "pg": "^7.6.1",
     "puppeteer": "^1.10.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2"
   }
 }

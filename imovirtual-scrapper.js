@@ -1,12 +1,9 @@
 const cheerio = require('cheerio');
-const rp = require('request-promise');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
 const puppeteer = require('puppeteer');
 
-const adapter = new FileSync('db.json');
-const db = low(adapter);
 
 var $;
 
