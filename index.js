@@ -17,7 +17,7 @@ const client = new Client({
   ssl: true,
 });
 
-client.connect();
+// client.connect();
 
 // every 5 seconds
 var j = schedule.scheduleJob({hour: 16, minute: 00}, function(){
@@ -42,7 +42,7 @@ function getDataIfNeeded(data) {
     var endDate = (new Date(new Date(Date.now()).setUTCHours(0,0,0,0)));
     if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
         imovirtualScraper.getData(client);
-        idealista.getToken(client);
+        // idealista.getToken(client);
     }
 } 
 
@@ -65,11 +65,13 @@ app.get('/', function(req, res) {
 app.listen(server_port, function() {
     console.log('Server is running on server_ip_address ' + server_ip_address + ' and server_port:' + server_port);
 
-    checkIfTableExistsAndCreate();
+    // checkIfTableExistsAndCreate();
 
     // idealista.getToken();
 
     // idealista.getData();
+
+    imovirtualScraper.getData(client);
 });
 
 // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
@@ -96,7 +98,7 @@ function checkIfTableExistsAndCreate() {
         if(!res.rows[0].exists) {
             client.query("CREATE TABLE values (median float, max float, min float, date varchar(100), source varchar(10));", (err, res) => {
                 if (err) throw err;
-                // client.end();
+                client.end();
         
                 console.log("Table Created!");
 
