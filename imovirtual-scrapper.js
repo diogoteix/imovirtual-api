@@ -35,6 +35,7 @@ function getData(client) {
         })
         .catch((err) => {
             console.log(err);
+            getDate(client);
         });
 }
 
