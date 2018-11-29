@@ -12,9 +12,9 @@ var app = express();
 const { Client } = require('pg');
 
 const client = new Client({
-//   connectionString: process.env.DATABASE_URL,
-  connectionString: "postgres://postgres:password@localhost:5432/mylocaldb",
-//   ssl: true,
+  connectionString: process.env.DATABASE_URL,
+//   connectionString: "postgres://postgres:password@localhost:5432/mylocaldb",
+  ssl: true,
 });
 
 client.connect();
