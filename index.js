@@ -40,10 +40,10 @@ function updateCurrentDay() {
 function getDataIfNeeded(data) {
     var currentDate = new Date(Date.now());
     var endDate = (new Date(new Date(Date.now()).setUTCHours(0,0,0,0)));
-    if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
+    // if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
         imovirtualScraper.getData(client);
         idealista.getToken(client);
-    }
+    // }
 } 
 
 app.use(function(req, res, next) {
