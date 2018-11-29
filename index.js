@@ -75,21 +75,29 @@ app.listen(server_port, function() {
 // });
 
 function checkIfTableExistsAndCreate() {
-    client.query("SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_name = 'values' );", (err, res) => {
+
+    client.query("DROP TABLE values;", (err, res) => {
         if (err) throw err;
         // client.end();
 
-        if(!res.rows[0].exists) {
-            client.query("CREATE TABLE values (median float, max float, min float, date varchar(40), source varchar(10));", (err, res) => {
-                if (err) throw err;
-                // client.end();
-        
-                console.log("Table Created!");
+        console.log("Table Deleted!");
+    })
 
-                updateCurrentDay();
-            })
-        } else {
-            updateCurrentDay();
-        }
-    });
+    // client.query("SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_name = 'values' );", (err, res) => {
+    //     if (err) throw err;
+    //     // client.end();
+
+    //     if(!res.rows[0].exists) {
+    //         client.query("CREATE TABLE values (median float, max float, min float, date varchar(100), source varchar(10));", (err, res) => {
+    //             if (err) throw err;
+    //             // client.end();
+        
+    //             console.log("Table Created!");
+
+    //             updateCurrentDay();
+    //         })
+    //     } else {
+    //         updateCurrentDay();
+    //     }
+    // });
 }
