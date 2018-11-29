@@ -14,8 +14,7 @@ const options = {
       $ = cheerio.load(body);
     },
     headers: {
-        'User-Agent': 'Mozilla/5.0',
-        'Cookie': 'cto_lwid=48e6dbde-2245-4f48-958b-c5137e3e0fc0; _ga=GA1.2.1284116433.1542989941; optimizelyEndUserId=oeu1542989941251r0.21145502525722604; _gcl_au=1.1.343281382.1542989947; lastLoc=41.14766,-8.6079; PHPSESSID=m9ot2r8afbm4q11364nddgb9q0; mobile_default=desktop; ldTd=true; _gid=GA1.2.488091533.1543314660; b10cb2fb5b84d01d21bc3a070be99534=96d8c5c7659f1fad988689e82e35a319; ak_bmsc=586FD40180C4941F934AB7337A852C690210650F9A10000080B1FE5BCD82AA54~plmxnFn80r09mH5hCvUijQ7tjWN/hutFseTbcQMuzbflKR3dMk4tD4euYuPi2zWCLaJw5U+nmX0EsAamB10cvE8zbXw1Y6dQs3McRLePGIIZwzobJRliGEX96WJHMvlxXKm/g4G3b35dFEZXRRaGxX01lTZmBXnjUaos6t3z+WNFPAAg6evRz7RB+i/3wy1JlkU1iV74gBOvx2IRtsgqG7snEzYDilWIIUpuBzr4i2jk8=; onap=167415e0848x626ca30-4-1675ae5628cxb3ab076-1-1543420042; _gat_clientNinja=1; mp_fbcae190c2396b3f725856d427c197d0_mixpanel=%7B%22distinct_id%22%3A%20%22167415e0acc365-017175700e1fac-35677607-1aeaa0-167415e0acd3f7%22%2C%22%24device_id%22%3A%20%22167415e0acc365-017175700e1fac-35677607-1aeaa0-167415e0acd3f7%22%2C%22%24search_engine%22%3A%20%22google%22%2C%22%24initial_referrer%22%3A%20%22https%3A%2F%2Fwww.google.pt%2F%22%2C%22%24initial_referring_domain%22%3A%20%22www.google.pt%22%7D; cto_idcpy=38c330f0-61cb-4407-814f-aa2f4ef83839; _ceg.s=piwt4z; _ceg.u=piwt4z'
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36'
     }
   };
 
