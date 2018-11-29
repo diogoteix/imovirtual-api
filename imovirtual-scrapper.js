@@ -39,12 +39,11 @@ function getData(client) {
             data.push(getOfferObject(element));
         });
 
+        await browser.close();
+
         console.log("Scrap Done, " + data.length + " apartments found!");
 
         saveData(data, client);
-
-      
-        await browser.close();
       })();
 
     // rp(options)
