@@ -3,6 +3,8 @@ const rp = require('request-promise');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
+const puppeteer = require('puppeteer');
+
 const adapter = new FileSync('db.json');
 const db = low(adapter);
 
@@ -11,7 +13,7 @@ var $;
 const options = {
     uri: `http://www.imovirtual.com/comprar/apartamento/vila-nova-de-gaia/?search%5Bfilter_enum_rooms_num%5D%5B0%5D=2&search%5Bfilter_enum_condition%5D%5B0%5D=novo&search%5Bfilter_enum_condition%5D%5B1%5D=em_construcao&search%5Bdescription%5D=1&search%5Bsubregion_id%5D=195&nrAdsPerPage=100`,
     transform: function (body) {
-      $ = cheerio.load(body);
+      $ = cheerio.load(body); 
     },
     headers: {
         'User-Agent': 'api-imovirtual https://github.com/diogoteix/imovirtual-api',
@@ -23,20 +25,40 @@ const options = {
 function getData(client) {
     var data = [];
 
-    rp(options)
-        .then(() => {
-            $('.offer-item').each(function(index, element) {
-                data.push(getOfferObject(element));
-            });
+    (async () => {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+        await page.goto('https://www.imovirtual.com/comprar/apartamento/vila-nova-de-gaia/?search%5Bfilter_enum_rooms_num%5D%5B0%5D=2&search%5Bfilter_enum_condition%5D%5B0%5D=novo&search%5Bfilter_enum_condition%5D%5B1%5D=em_construcao&search%5Bdescription%5D=1&search%5Bsubregion_id%5D=195&nrAdsPerPage=100');
+        let bodyHTML = await page.evaluate(() => document.body.innerHTML);
 
-            console.log("Scrap Done, " + data.length + " apartments found!");
+        $ = cheerio.load(bodyHTML);
 
-            saveData(data, client);
-        })
-        .catch((err) => {
-            console.log(err);
-            getData(client);
+        $('.offer-item').each(function(index, element) {
+            data.push(getOfferObject(element));
         });
+
+        console.log("Scrap Done, " + data.length + " apartments found!");
+
+        saveData(data, client);
+
+      
+        await browser.close();
+      })();
+
+    // rp(options)
+    //     .then(() => {
+    //         $('.offer-item').each(function(index, element) {
+    //             data.push(getOfferObject(element));
+    //         });
+
+    //         console.log("Scrap Done, " + data.length + " apartments found!");
+
+    //         saveData(data, client);
+    //     })
+    //     .catch((err) => {
+    //         console.log(err);
+    //         getData(client);
+    //     });
 }
 
 function getOfferObject(element) {
