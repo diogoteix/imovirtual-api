@@ -19,7 +19,7 @@ const options = {
     }
   };
 
-function getData() {
+function getData(client) {
     var data = [];
 
     rp(options)
@@ -30,7 +30,7 @@ function getData() {
 
             console.log("Scrap Done, " + data.length + " apartments found!");
 
-            saveData(data);
+            saveData(data, client);
         })
         .catch((err) => {
             console.log(err);
@@ -53,27 +53,62 @@ function getSum(total, offer) {
     return total + Math.round(offer.price);
 }
 
-function saveData(data) {
-    const collection = db
-        .defaults({ values: [] })
-        .get('values')
+function saveData(data, client) {
 
     var totalPrice = data.reduce(getSum, 0);
     var median = totalPrice / data.length;
     var max = Math.max.apply(Math, data.map(function(o) { return o.price; }));
     var min = Math.min.apply(Math, data.map(function(o) { return o.price; }));
 
-    const newValue = collection
-        .push({median, min, max, date: new Date(Date.now())})
-        .write();
+    // for(var value in data) {
+        client.query("INSERT INTO values (median, max, min, date, source) VALUES ('" + median + "', '" + max + "', '" + min + "', '" + new Date(Date.now()) + "', 'imovirtual');", (err, res) => {
+            if (err) throw err;
+        });
+    
+
+    // client.end();
+
+    
+
+
+
+
+    // const collection = db
+    //     .defaults({ values: [] })
+    //     .get('values')
+
+    
+
+    // const newValue = collection
+    //     .push({median, min, max, date: new Date(Date.now())})
+    //     .write();
 }
 
-function getSavedData(startDate, endDate) {
-    return db.get('values')
-            .filter(function (v) {
-                return new Date(v.date) >= startDate && new Date(v.date) <= endDate
+function getSavedData(startDate, endDate, client, callback) {
+    var data = [];
+
+    client.query("SELECT * FROM values;", (err, res) => {
+        if (err) throw err;
+        for (let row of res.rows) {
+            data.push({
+                median: row.median,
+                max: row.max,
+                min: row.min,
+                source: row.source,
+                date: row.date
             })
-            .value();
+        }
+        // client.end();
+
+        callback(data);
+    });
+
+
+    // return db.get('values')
+    //         .filter(function (v) {
+    //             return new Date(v.date) >= startDate && new Date(v.date) <= endDate
+    //         })
+    //         .value();
 }
 
 module.exports = {

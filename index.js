@@ -8,6 +8,16 @@ var imovirtualScraper =  require('./imovirtual-scrapper');
 
 var app = express();
 
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+//   connectionString: "postgres://postgres:password@localhost:5432/mylocaldb",
+  ssl: true,
+});
+
+client.connect();
+
 // every 5 seconds
 var j = schedule.scheduleJob({hour: 16, minute: 00}, function(){
     updateCurrentDay();
@@ -21,13 +31,18 @@ function updateCurrentDay() {
     var startDate = new Date(1543148511 * 1000);
     var endDate = new Date(Date.now());
 
-    var data = imovirtualScraper.getSavedData(startDate, endDate);
+    var data = imovirtualScraper.getSavedData(startDate, endDate, client, getDataIfNeeded);
 
-    var currentDate = new Date(Date.now());
-    if (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15) {
-        imovirtualScraper.getData();
-    }
+    
 }
+
+function getDataIfNeeded(data) {
+    var currentDate = new Date(Date.now());
+    var endDate = new Date(Date.now());
+    if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
+        imovirtualScraper.getData(client);
+    }
+} 
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -39,29 +54,42 @@ app.get('/', function(req, res) {
     var startDate = new Date(parseInt(req.query.startDate) * 1000);
     var endDate = new Date(parseInt(req.query.endDate) * 1000);
 
-    res.status(200).send(imovirtualScraper.getSavedData(startDate, endDate));
+    imovirtualScraper.getSavedData(startDate, endDate, client, (result) => {
+        res.status(200).send(result);
+    });
+
 });
 
 app.listen(server_port, function() {
     console.log('Server is running on server_ip_address ' + server_ip_address + ' and server_port:' + server_port);
 
-    updateCurrentDay();
+    checkIfTableExistsAndCreate();
 });
 
-const { Client } = require('pg');
+// client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+//   if (err) throw err;
+//   for (let row of res.rows) {
+//     console.log(JSON.stringify(row));
+//   }
+//   client.end();
+// });
 
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-//   connectionString: "postgres://postgres:password@localhost:5432/mylocaldb",
-  ssl: true,
-});
+function checkIfTableExistsAndCreate() {
+    client.query("SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_name = 'values' );", (err, res) => {
+        if (err) throw err;
+        // client.end();
 
-client.connect();
+        if(!res.rows[0].exists) {
+            client.query("CREATE TABLE values (median float, max float, min float, date varchar(40), source varchar(10));", (err, res) => {
+                if (err) throw err;
+                // client.end();
+        
+                console.log("Table Created!");
 
-client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
-  if (err) throw err;
-  for (let row of res.rows) {
-    console.log(JSON.stringify(row));
-  }
-  client.end();
-});
+                updateCurrentDay();
+            })
+        } else {
+            updateCurrentDay();
+        }
+    });
+}
