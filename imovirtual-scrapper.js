@@ -44,6 +44,7 @@ function getData(client) {
         console.log("Scrap Done, " + data.length + " apartments found!");
 
         saveData(data, client);
+        
       })();
 
     // rp(options)
