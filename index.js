@@ -5,15 +5,16 @@ var express = require('express');
 var schedule = require('node-schedule');
 
 var imovirtualScraper =  require('./imovirtual-scrapper');
+var idealista = require('./idealista');
 
 var app = express();
 
 const { Client } = require('pg');
 
 const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-//   connectionString: "postgres://postgres:password@localhost:5432/mylocaldb",
-  ssl: true,
+//   connectionString: process.env.DATABASE_URL,
+  connectionString: "postgres://postgres:password@localhost:5432/mylocaldb",
+//   ssl: true,
 });
 
 client.connect();
@@ -38,9 +39,10 @@ function updateCurrentDay() {
 
 function getDataIfNeeded(data) {
     var currentDate = new Date(Date.now());
-    var endDate = new Date(Date.now());
+    var endDate = (new Date(new Date(Date.now()).setUTCHours(0,0,0,0)));
     if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
         imovirtualScraper.getData(client);
+        idealista.getToken(client);
     }
 } 
 
@@ -64,6 +66,10 @@ app.listen(server_port, function() {
     console.log('Server is running on server_ip_address ' + server_ip_address + ' and server_port:' + server_port);
 
     checkIfTableExistsAndCreate();
+
+    // idealista.getToken();
+
+    // idealista.getData();
 });
 
 // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
