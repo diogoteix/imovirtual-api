@@ -40,10 +40,10 @@ function updateCurrentDay() {
 function getDataIfNeeded(data) {
     var currentDate = new Date(Date.now());
     var endDate = (new Date(new Date(Date.now()).setUTCHours(0,0,0,0)));
-    // if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
+    if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
         imovirtualScraper.getData(client);
         idealista.getToken(client);
-    // }
+    }
 } 
 
 app.use(function(req, res, next) {
@@ -82,28 +82,28 @@ app.listen(server_port, function() {
 
 function checkIfTableExistsAndCreate() {
 
-    // client.query("DROP TABLE values;", (err, res) => {
-    //     if (err) throw err;
-    //     // client.end();
-
-    //     console.log("Table Deleted!");
-    // })
-
-    client.query("SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_name = 'values' );", (err, res) => {
+    client.query("DROP TABLE values;", (err, res) => {
         if (err) throw err;
         // client.end();
 
-        if(!res.rows[0].exists) {
-            client.query("CREATE TABLE values (median float, max float, min float, date varchar(100), source varchar(10));", (err, res) => {
-                if (err) throw err;
-                // client.end();
-        
-                console.log("Table Created!");
+        console.log("Table Deleted!");
+    })
 
-                updateCurrentDay();
-            })
-        } else {
-            updateCurrentDay();
-        }
-    });
+    // client.query("SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_name = 'values' );", (err, res) => {
+    //     if (err) throw err;
+    //     // client.end();
+
+    //     if(!res.rows[0].exists) {
+    //         client.query("CREATE TABLE values (median float, max float, min float, date varchar(100), source varchar(10));", (err, res) => {
+    //             if (err) throw err;
+    //             // client.end();
+        
+    //             console.log("Table Created!");
+
+    //             updateCurrentDay();
+    //         })
+    //     } else {
+    //         updateCurrentDay();
+    //     }
+    // });
 }
