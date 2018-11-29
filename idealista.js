@@ -19,7 +19,6 @@ function getToken(client) {
 
     // A chunk of data has been recieved.
     resp.on('data', (chunk) => {
-        console.log(JSON.parse(chunk));
         accessToken = JSON.parse(chunk).access_token;
         getData(client);
     });
@@ -63,8 +62,6 @@ function getData(client) {
 
     request(options, function (error, response, body) {
         if (error) throw new Error(error);
-
-        console.log(JSON.parse(body));
 
         var data = JSON.parse(body).elementList;
 
