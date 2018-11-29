@@ -41,6 +41,10 @@ function getData(client) {
 
         console.log("Scrap Done, " + data.length + " apartments found!");
 
+        if(data.length == 0) {
+            console.log(data);
+        }
+
         saveData(data, client);
 
       })();
