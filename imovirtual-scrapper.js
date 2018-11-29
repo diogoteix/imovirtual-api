@@ -27,7 +27,8 @@ function getData(client) {
 
     (async () => {
         const browser = await puppeteer.launch({
-            headless: true
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
         });
         const page = await browser.newPage();
         await page.goto('https://www.imovirtual.com/comprar/apartamento/vila-nova-de-gaia/?search%5Bfilter_enum_rooms_num%5D%5B0%5D=2&search%5Bfilter_enum_condition%5D%5B0%5D=novo&search%5Bfilter_enum_condition%5D%5B1%5D=em_construcao&search%5Bdescription%5D=1&search%5Bsubregion_id%5D=195&nrAdsPerPage=100');
@@ -44,7 +45,7 @@ function getData(client) {
         console.log("Scrap Done, " + data.length + " apartments found!");
 
         saveData(data, client);
-        
+
       })();
 
     // rp(options)
