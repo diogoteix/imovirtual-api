@@ -47,3 +47,21 @@ app.listen(server_port, function() {
 
     updateCurrentDay();
 });
+
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+//   connectionString: "postgres://postgres:password@localhost:5432/mylocaldb",
+  ssl: true,
+});
+
+client.connect();
+
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
+});

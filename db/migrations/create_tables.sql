@@ -1,0 +1,1 @@
+CREATE TABLE values (median integer, max integer, min integer, date date);
