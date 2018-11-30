@@ -65,9 +65,9 @@ app.get('/', function(req, res) {
 app.listen(server_port, function() {
     console.log('Server is running on server_ip_address ' + server_ip_address + ' and server_port:' + server_port);
 
-    // checkIfTableExistsAndCreate();
+    checkIfTableExistsAndCreate();
 
-    idealista.getToken();
+    // idealista.getToken();
 
     // idealista.getData();
 });
