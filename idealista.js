@@ -52,7 +52,8 @@ function getData(client) {
             apikey: '%22yo8b1mgyptmqpojgo8l1y6aqp13e5lv1%22',
             t: '1',
             language: 'pt',
-            locale: 'pt' 
+            locale: 'pt' ,
+            bedrooms: '2'
         },
         headers: 
         { 
