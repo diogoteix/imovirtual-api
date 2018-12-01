@@ -53,7 +53,8 @@ function getData(client) {
             t: '1',
             language: 'pt',
             locale: 'pt' ,
-            bedrooms: '2'
+            bedrooms: '2',
+            newDevelopment: true
         },
         headers: 
         { 
