@@ -89,35 +89,35 @@ function checkIfTableExistsAndCreate() {
     //     console.log("Table Deleted!");
     // })
 
-    client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 16:44:10 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
-        if (err) throw err;
-        // client.end();
-
-        console.log("Row Deleted!");
-    })
-
-    client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 16:44:11 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
-        if (err) throw err;
-        // client.end();
-
-        console.log("Row Deleted!");
-    })
-
-    // client.query("SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_name = 'values' );", (err, res) => {
+    // client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 16:44:10 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
     //     if (err) throw err;
     //     // client.end();
 
-    //     if(!res.rows[0].exists) {
-    //         client.query("CREATE TABLE values (median float, max float, min float, date varchar(100), source varchar(10));", (err, res) => {
-    //             if (err) throw err;
-    //             // client.end();
-        
-    //             console.log("Table Created!");
+    //     console.log("Row Deleted!");
+    // })
 
-    //             updateCurrentDay();
-    //         })
-    //     } else {
-    //         updateCurrentDay();
-    //     }
-    // });
+    // client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 16:44:11 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
+    //     if (err) throw err;
+    //     // client.end();
+
+    //     console.log("Row Deleted!");
+    // })
+
+    client.query("SELECT EXISTS ( SELECT 1 FROM information_schema.tables WHERE table_name = 'values' );", (err, res) => {
+        if (err) throw err;
+        // client.end();
+
+        if(!res.rows[0].exists) {
+            client.query("CREATE TABLE values (median float, max float, min float, date varchar(100), source varchar(10));", (err, res) => {
+                if (err) throw err;
+                // client.end();
+        
+                console.log("Table Created!");
+
+                updateCurrentDay();
+            })
+        } else {
+            updateCurrentDay();
+        }
+    });
 }
