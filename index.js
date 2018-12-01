@@ -89,14 +89,14 @@ function checkIfTableExistsAndCreate() {
     //     console.log("Table Deleted!");
     // })
 
-    client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 16:44:10 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
+    client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 17:02:09 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
         if (err) throw err;
         // client.end();
 
         console.log("Row Deleted!");
     })
 
-    client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 16:44:11 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
+    client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 17:02:19 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
         if (err) throw err;
         // client.end();
 
