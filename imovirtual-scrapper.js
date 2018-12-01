@@ -74,7 +74,7 @@ function getData(client) {
     var data = [];
 
     (async () => {
-        const browser = await puppeteer.launch();
+        const browser = await puppeteer.launch({headless: false});
         const page = await browser.newPage();
         // Prepare for the tests (not yet implemented).
         await preparePageForTests(page);
