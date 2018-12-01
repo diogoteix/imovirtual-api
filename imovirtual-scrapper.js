@@ -74,10 +74,7 @@ function getData(client) {
     var data = [];
 
     (async () => {
-        const browser = await puppeteer.launch({
-            headless: true,
-            args: ['--no-sandbox', '--disable-setuid-sandbox']
-        });
+        const browser = await puppeteer.launch();
         const page = await browser.newPage();
         // Prepare for the tests (not yet implemented).
         await preparePageForTests(page);
