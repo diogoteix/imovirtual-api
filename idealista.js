@@ -46,7 +46,7 @@ function getData(client) {
         { 
             operation: 'sale',
             propertyType: 'homes',
-            locationId: '0-EU-PT-13-17-027',
+            locationId: '0-EU-PT-13-17',
             order: 'publicationDate',
             sort: 'desc',
             apikey: '%22yo8b1mgyptmqpojgo8l1y6aqp13e5lv1%22',
@@ -54,7 +54,8 @@ function getData(client) {
             language: 'pt',
             locale: 'pt' ,
             bedrooms: '2',
-            newDevelopment: true
+            newDevelopment: true,
+            maxItems: '50'
         },
         headers: 
         { 
