@@ -40,7 +40,8 @@ function updateCurrentDay() {
 function getDataIfNeeded(data) {
     var currentDate = new Date(Date.now());
     var endDate = (new Date(new Date(Date.now())));
-    if (data.length == 0 || (new Date(data[data.length - 1].date).getTime() < currentDate && endDate.getHours() >= 15)) {
+    var latestDate = (new Date(data[data.length - 1].date).setHours(23,59,59));
+    if (data.length == 0 || (latestDate < currentDate && endDate.getHours() >= 15)) {
         imovirtualScraper.getData(client);
         idealista.getToken(client);
     }
