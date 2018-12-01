@@ -4,6 +4,12 @@ const FileSync = require('lowdb/adapters/FileSync');
 
 const puppeteer = require('puppeteer');
 
+const phantom = require('phantom');
+
+var Horseman = require('node-horseman')
+var horseman = new Horseman()
+var fs = require('fs')
+
 
 var $;
 
@@ -73,31 +79,61 @@ const preparePageForTests = async (page) => {
 function getData(client) {
     var data = [];
 
-    (async () => {
-        const browser = await puppeteer.launch({headless: false});
-        const page = await browser.newPage();
-        // Prepare for the tests (not yet implemented).
-        await preparePageForTests(page);
-        await page.goto('https://www.imovirtual.com/comprar/apartamento/vila-nova-de-gaia/?search%5Bfilter_enum_rooms_num%5D%5B0%5D=2&search%5Bfilter_enum_condition%5D%5B0%5D=novo&search%5Bfilter_enum_condition%5D%5B1%5D=em_construcao&search%5Bdescription%5D=1&search%5Bsubregion_id%5D=195&nrAdsPerPage=100');
-        let bodyHTML = await page.evaluate(() => document.body.innerHTML);
+    (async function() {
+        const instance = await phantom.create();
+        const page = await instance.createPage();
+        await page.on("onResourceRequested", function(requestData) {
+            // console.info('Requesting', requestData.url)
+        });
+    
+        const status = await page.open(options.uri);
+        console.log(status);
+    
+        const content = await page.property('content');
+        // console.log(content);
 
-        $ = cheerio.load(bodyHTML);
+        $ = cheerio.load(content); 
+    
+        await instance.exit();
 
         $('.offer-item').each(function(index, element) {
             data.push(getOfferObject(element));
         });
-
-        await browser.close();
 
         console.log("Scrap Done, " + data.length + " apartments found!");
 
         if(data.length == 0) {
             console.log(bodyHTML);
         }
-
+    
         saveData(data, client);
+    }());
 
-      })();
+    // (async () => {
+    //     const browser = await puppeteer.launch({headless: false});
+    //     const page = await browser.newPage();
+    //     // Prepare for the tests (not yet implemented).
+    //     await preparePageForTests(page);
+    //     await page.goto('https://www.imovirtual.com/comprar/apartamento/vila-nova-de-gaia/?search%5Bfilter_enum_rooms_num%5D%5B0%5D=2&search%5Bfilter_enum_condition%5D%5B0%5D=novo&search%5Bfilter_enum_condition%5D%5B1%5D=em_construcao&search%5Bdescription%5D=1&search%5Bsubregion_id%5D=195&nrAdsPerPage=100');
+    //     let bodyHTML = await page.evaluate(() => document.body.innerHTML);
+
+    //     $ = cheerio.load(bodyHTML);
+
+    //     $('.offer-item').each(function(index, element) {
+    //         data.push(getOfferObject(element));
+    //     });
+
+    //     await browser.close();
+
+    //     console.log("Scrap Done, " + data.length + " apartments found!");
+
+    //     if(data.length == 0) {
+    //         console.log(bodyHTML);
+    //     }
+
+    //     saveData(data, client);
+
+    //   })();
 
     // rp(options)
     //     .then(() => {
