@@ -1,7 +1,5 @@
 const cheerio = require('cheerio');
 
-const phantom = require('phantom');
-
 var request = require('request');
 
 
