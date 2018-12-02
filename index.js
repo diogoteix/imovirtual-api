@@ -39,9 +39,8 @@ function updateCurrentDay() {
 
 function getDataIfNeeded(data) {
     var currentDate = new Date(Date.now());
-    var endDate = (new Date(new Date(Date.now())));
-    var latestDate = (new Date(data[data.length - 1].date).setHours(23,59,59));
-    if (data.length == 0 || (latestDate < currentDate && endDate.getHours() >= 15)) {
+    var latestDate = (new Date(data[data.length - 1].date)).setHours(23,59,59);
+    if (data.length == 0 || (latestDate < currentDate && currentDate.getHours() >= 15)) {
         imovirtualScraper.getData(client);
         idealista.getToken(client);
     }
@@ -73,6 +72,8 @@ app.listen(server_port, function() {
     // idealista.getData();
 
     // imovirtualScraper.getData(client);
+
+    // getDataIfNeeded();
 });
 
 // client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
