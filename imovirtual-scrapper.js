@@ -103,7 +103,7 @@ function getData(client) {
         console.log("Scrap Done, " + data.length + " apartments found!");
 
         if(data.length == 0) {
-            console.log(bodyHTML);
+            console.log(content);
         }
     
         saveData(data, client);
