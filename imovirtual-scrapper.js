@@ -82,6 +82,8 @@ function getData(client) {
     (async function() {
         const instance = await phantom.create();
         const page = await instance.createPage();
+        page.viewportSize = { width: 1280, height: 800 };
+        page.settings.userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.106 Safari/537.36";
         await page.on("onResourceRequested", function(requestData) {
             // console.info('Requesting', requestData.url)
         });
