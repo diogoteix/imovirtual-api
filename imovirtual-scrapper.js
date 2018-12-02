@@ -114,7 +114,7 @@ function getData(client) {
                         var result = JSON.parse(body);
 
                         result.precos.forEach(element => {
-                            data.push(element.value.replace(/\s/g, "").slice(0, -1));
+                            data.push({ price: element.value.replace(/\s/g, "").slice(0, -1) });
                         });
                     
                         console.log("Scrap Done, " + data.length + " apartments found!");
@@ -140,7 +140,7 @@ function getData(client) {
                 var result = JSON.parse(body);
 
                 result.precos.forEach(element => {
-                    data.push(element.value.replace(/\s/g, "").slice(0, -1));
+                    data.push({ price: element.value.replace(/\s/g, "").slice(0, -1) });
                 });
             
                 console.log("Scrap Done, " + data.length + " apartments found!");
