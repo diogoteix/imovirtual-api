@@ -32,7 +32,7 @@ function getData(client) {
     }, function(err, resp, body) {
         var result = JSON.parse(body);
 
-        if(!result.last_run || new Date(result.last_run.start_time).setHours(23,59,59) < new Date(Date.now)) {
+        if(!result.last_run || new Date(result.last_run.start_time).setHours(23,59,59) < new Date(Date.now())) {
             request({
                 uri: 'https://www.parsehub.com/api/v2/projects/tVdT9_R52ANa/run',
                 method: 'POST',
