@@ -65,7 +65,7 @@ function getData(client) {
                     
                         saveData(data, client);
                     });
-                }, 30000)
+                }, 60000)
             });
         } else {
             request({
