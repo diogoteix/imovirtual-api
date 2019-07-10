@@ -108,15 +108,25 @@ function getOfferObject(element) {
 }
 
 function getSum(total, offer) {
-    return total + Math.round(offer.price);
+    const price = Math.round(offer.price);
+    
+    if(price) {
+        return total + price;
+    } else {
+        return total;
+    }
 }
 
 function saveData(data, client) {
 
     var totalPrice = data.reduce(getSum, 0);
     var median = totalPrice / data.length;
-    var max = Math.max.apply(Math, data.map(function(o) { return o.price; }));
-    var min = Math.min.apply(Math, data.map(function(o) { return o.price; }));
+    var max = data.reduce(function(a, b) {
+        return Math.max(a, b);
+    });
+    var min = data.reduce(function(a, b) {
+        return Math.min(a, b);
+    });
 
     // for(var value in data) {
         client.query("INSERT INTO values (median, max, min, date, source) VALUES ('" + median + "', '" + max + "', '" + min + "', '" + new Date(Date.now()) + "', 'imovirtual');", (err, res) => {
