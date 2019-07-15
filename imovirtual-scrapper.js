@@ -122,10 +122,22 @@ function saveData(data, client) {
     var totalPrice = data.reduce(getSum, 0);
     var median = totalPrice / data.length;
     var max = data.reduce(function(a, b) {
-        return Math.max(a, b);
+        if(!a) {
+            return b;
+        } else if(!b) {
+            return a;
+        } else {
+            return Math.max(a, b);
+        }
     });
     var min = data.reduce(function(a, b) {
-        return Math.min(a, b);
+        if(!a) {
+            return b;
+        } else if(!b) {
+            return a;
+        } else {
+            return Math.min(a, b);
+        }
     });
 
     // for(var value in data) {
