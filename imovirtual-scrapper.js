@@ -122,21 +122,27 @@ function saveData(data, client) {
     var totalPrice = data.reduce(getSum, 0);
     var median = totalPrice / data.length;
     var max = data.reduce(function(a, b) {
-        if(!a) {
-            return b;
-        } else if(!b) {
-            return a;
+        const priceA = a.price;
+        const priceB = b.price;
+
+        if(!priceA) {
+            return priceB;
+        } else if(!priceB) {
+            return priceA;
         } else {
-            return Math.max(a, b);
+            return Math.max(priceA, priceB);
         }
     });
     var min = data.reduce(function(a, b) {
-        if(!a) {
-            return b;
-        } else if(!b) {
-            return a;
+        const priceA = a.price;
+        const priceB = b.price;
+        
+        if(!priceA) {
+            return priceB;
+        } else if(!priceB) {
+            return priceA;
         } else {
-            return Math.min(a, b);
+            return Math.min(priceA, priceB);
         }
     });
 
