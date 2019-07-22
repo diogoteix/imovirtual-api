@@ -118,13 +118,11 @@ function getSum(total, offer) {
 }
 
 function saveData(data, client) {
-
+    
     var totalPrice = data.reduce(getSum, 0);
     var median = totalPrice / data.length;
-    var max = data.reduce(function(a, b) {
-        const priceA = a.price;
-        const priceB = b.price;
-
+    var prices = data.map((a) => a.price);
+    var max = prices.reduce(function(priceA, priceB) {
         if(!priceA) {
             return priceB;
         } else if(!priceB) {
@@ -133,10 +131,7 @@ function saveData(data, client) {
             return Math.max(priceA, priceB);
         }
     });
-    var min = data.reduce(function(a, b) {
-        const priceA = a.price;
-        const priceB = b.price;
-        
+    var min = prices.reduce(function(priceA, priceB) {        
         if(!priceA) {
             return priceB;
         } else if(!priceB) {
