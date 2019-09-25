@@ -41,15 +41,15 @@ function updateCurrentDay() {
 }
 
 function getDataIfNeeded(data) {
-  var currentDate = new Date(Date.now());
-  var latestDate = new Date(data[data.length - 1].date).setHours(23, 59, 59);
-  if (
-    data.length == 0 ||
-    (latestDate < currentDate && currentDate.getHours() >= 15)
-  ) {
-    imovirtualScraper.getData(client);
-    idealista.getToken(client);
-  }
+  //   var currentDate = new Date(Date.now());
+  //   var latestDate = new Date(data[data.length - 1].date).setHours(23, 59, 59);
+  //   if (
+  //     data.length == 0 ||
+  //     (latestDate < currentDate && currentDate.getHours() >= 15)
+  //   ) {
+  imovirtualScraper.getData(client);
+  idealista.getToken(client);
+  //   }
 }
 
 app.use(function(req, res, next) {
