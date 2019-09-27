@@ -13,7 +13,7 @@ const { Client } = require("pg");
 
 const client = new Client({
   connectionString: process.env.DATABASE_URL,
-  //   connectionString: "postgres://postgres:password@localhost:5432/mylocaldb"
+  // connectionString: "postgres://postgres:password@localhost:5432/mylocaldb"
   ssl: true
 });
 
@@ -41,15 +41,15 @@ function updateCurrentDay() {
 }
 
 function getDataIfNeeded(data) {
-  //   var currentDate = new Date(Date.now());
-  //   var latestDate = new Date(data[data.length - 1].date).setHours(23, 59, 59);
-  //   if (
-  //     data.length == 0 ||
-  //     (latestDate < currentDate && currentDate.getHours() >= 15)
-  //   ) {
-  imovirtualScraper.getData(client);
-  idealista.getToken(client);
-  //   }
+  var currentDate = new Date(Date.now());
+  var latestDate = new Date(data[data.length - 1].date).setHours(23, 59, 59);
+  if (
+    data.length == 0 ||
+    (latestDate < currentDate && currentDate.getHours() >= 15)
+  ) {
+    imovirtualScraper.getData(client);
+    idealista.getToken(client);
+  }
 }
 
 app.use(function(req, res, next) {
@@ -98,12 +98,12 @@ app.listen(server_port, function() {
 // });
 
 function checkIfTableExistsAndCreate() {
-  client.query("DROP TABLE values;", (err, res) => {
-    if (err) throw err;
-    // client.end();
+  // client.query("DROP TABLE values;", (err, res) => {
+  //   if (err) throw err;
+  //   client.end();
 
-    console.log("Table Deleted!");
-  });
+  //   console.log("Table Deleted!");
+  // });
 
   // client.query("DELETE FROM values WHERE date = 'Sat Dec 01 2018 17:02:09 GMT+0000 (Coordinated Universal Time)';", (err, res) => {
   //     if (err) throw err;

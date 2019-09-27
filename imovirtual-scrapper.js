@@ -35,78 +35,87 @@ function getData(client) {
     function(err, resp, body) {
       var result = JSON.parse(body);
 
-      // if(!result.last_run || new Date(result.last_run.start_time).setHours(23,59,59) < new Date(Date.now())) {
-      request(
-        {
-          uri: "https://www.parsehub.com/api/v2/projects/tVdT9_R52ANa/run",
-          method: "POST",
-          form: {
-            api_key: "tTDbiWe13-na",
-            send_email: "0"
-          }
-        },
-        function(err, resp, body) {
-          setTimeout(() => {
-            request(
-              {
-                uri: `https://www.parsehub.com/api/v2/runs/${
-                  JSON.parse(body).run_token
-                }/data`,
-                method: "GET",
-                qs: {
-                  api_key: "tTDbiWe13-na",
-                  format: "json"
+      if (
+        !result.last_run ||
+        new Date(result.last_run.start_time).setHours(23, 59, 59) <
+          new Date(Date.now())
+      ) {
+        request(
+          {
+            uri: "https://www.parsehub.com/api/v2/projects/tVdT9_R52ANa/run",
+            method: "POST",
+            form: {
+              api_key: "tTDbiWe13-na",
+              send_email: "0"
+            }
+          },
+          function(err, resp, body) {
+            setTimeout(() => {
+              request(
+                {
+                  uri: `https://www.parsehub.com/api/v2/runs/${
+                    JSON.parse(body).run_token
+                  }/data`,
+                  method: "GET",
+                  qs: {
+                    api_key: "tTDbiWe13-na",
+                    format: "json"
+                  },
+                  gzip: true
                 },
-                gzip: true
-              },
-              function(err, resp, body) {
-                var result = JSON.parse(body);
+                function(err, resp, body) {
+                  var result = JSON.parse(body);
 
-                result.selection1.forEach(element => {
-                  data.push({
-                    price: element.name.replace(/\s/g, "").replace("€/m²", "")
+                  result.selection1.forEach(element => {
+                    data.push({
+                      price: element.name.replace(/\s/g, "").replace("€/m²", "")
+                    });
                   });
-                });
 
-                console.log(
-                  "Scrap Done, " + data.length + " apartments found!"
-                );
+                  console.log(
+                    "Scrap Done, " + data.length + " apartments found!"
+                  );
 
-                if (data.length == 0) {
-                  console.log(result);
+                  if (data.length == 0) {
+                    console.log(result);
+                  }
+
+                  saveData(data, client);
                 }
+              );
+            }, 60000);
+          }
+        );
+      } else {
+        request(
+          {
+            uri: `https://www.parsehub.com/api/v2/runs/${result.last_run.run_token}/data`,
+            method: "GET",
+            qs: {
+              api_key: "tTDbiWe13-na",
+              format: "json"
+            },
+            gzip: true
+          },
+          function(err, resp, body) {
+            var result = JSON.parse(body);
 
-                saveData(data, client);
-              }
-            );
-          }, 60000);
-        }
-      );
-      // } else {
-      //     request({
-      //         uri: `https://www.parsehub.com/api/v2/runs/${result.last_run.run_token}/data`,
-      //         method: 'GET',
-      //         qs: {
-      //           api_key: "tTDbiWe13-na",
-      //           format: "json"
-      //         },
-      //         gzip: true
-      //     }, function(err, resp, body) {
-      //         var result = JSON.parse(body);
+            result.precos.forEach(element => {
+              data.push({
+                price: element.value.replace(/\s/g, "").slice(0, -1)
+              });
+            });
 
-      //         result.precos.forEach(element => {
-      //             data.push({ price: element.value.replace(/\s/g, "").slice(0, -1) });
-      //         });
+            console.log("Scrap Done, " + data.length + " apartments found!");
 
-      //         console.log("Scrap Done, " + data.length + " apartments found!");
+            if (data.length == 0) {
+              console.log(result);
+            }
 
-      //         if(data.length == 0) {
-      //             console.log(result);
-      //         }
-
-      //         saveData(data, client);
-      //     });
-      // }
+            saveData(data, client);
+          }
+        );
+      }
     }
   );
 }
