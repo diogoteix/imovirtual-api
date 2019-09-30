@@ -100,9 +100,9 @@ function getData(client) {
           function(err, resp, body) {
             var result = JSON.parse(body);
 
-            result.precos.forEach(element => {
+            result.selection1.forEach(element => {
               data.push({
-                price: element.value.replace(/\s/g, "").slice(0, -1)
+                price: element.name.replace(/\s/g, "").replace("€/m²", "")
               });
             });
 
