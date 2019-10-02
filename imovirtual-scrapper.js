@@ -22,6 +22,7 @@ const options = {
 function getData(client) {
   var data = [];
 
+  console.log("Get project");
   request(
     {
       uri: `https://www.parsehub.com/api/v2/projects/tVdT9_R52ANa`,
@@ -34,12 +35,14 @@ function getData(client) {
     },
     function(err, resp, body) {
       var result = JSON.parse(body);
+      console.log("Project: ", result);
 
       if (
         !result.last_run ||
         new Date(result.last_run.start_time).setHours(23, 59, 59) <
           new Date(Date.now())
       ) {
+        console.log("New run!");
         request(
           {
             uri: "https://www.parsehub.com/api/v2/projects/tVdT9_R52ANa/run",
@@ -50,7 +53,9 @@ function getData(client) {
             }
           },
           function(err, resp, body) {
+            console.log("Run requested!");
             setTimeout(() => {
+              console.log("Get run result");
               request(
                 {
                   uri: `https://www.parsehub.com/api/v2/runs/${
@@ -65,6 +70,7 @@ function getData(client) {
                 },
                 function(err, resp, body) {
                   var result = JSON.parse(body);
+                  console.log("Run result: ", result);
 
                   result.selection1.forEach(element => {
                     data.push({
@@ -87,6 +93,7 @@ function getData(client) {
           }
         );
       } else {
+        console.log("Get last run");
         request(
           {
             uri: `https://www.parsehub.com/api/v2/runs/${result.last_run.run_token}/data`,
@@ -99,6 +106,7 @@ function getData(client) {
           },
           function(err, resp, body) {
             var result = JSON.parse(body);
+            console.log("Last run result: ", result);
 
             result.selection1.forEach(element => {
               data.push({

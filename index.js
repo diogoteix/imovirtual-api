@@ -49,6 +49,10 @@ function getDataIfNeeded(data) {
   ) {
     imovirtualScraper.getData(client);
     idealista.getToken(client);
+  } else {
+    console.log("No data needed");
+    console.log("Data: ", data);
+    console.log("Time: ", currentDate);
   }
 }
 
