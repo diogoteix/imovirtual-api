@@ -45,7 +45,7 @@ function getDataIfNeeded(data) {
   var latestDate = new Date(data[data.length - 1].date).setHours(23, 59, 59);
   if (
     data.length == 0 ||
-    (latestDate < currentDate && currentDate.getHours() >= 15)
+    (latestDate < currentDate && currentDate.getHours() >= 14)
   ) {
     imovirtualScraper.getData(client);
     idealista.getToken(client);
