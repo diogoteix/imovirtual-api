@@ -19,7 +19,7 @@
   "homepage": "https://github.com/diogoteix/imovirtual-api#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
-    "express": "^4.16.4",
+    "express": "^4.18.2",
     "node-schedule": "^1.3.0",
     "pg": "^7.6.1",
     "request": "^2.88.0",
